@@ -34,7 +34,7 @@ void		blg(int	x0, int y0, int x1, int y1, t_mlx *mlx)
 		err = (-(line.dy))/2;
 	while (x0 != x1 && y0 != y1)
 	{
-		mlx_pixel_put(mlx->mlx, mlx->win, x0, y0, PURPLE);
+		mlx_pixel_put(mlx->mlx, mlx->win, x0, y0, mlx->map.vectors->color);
 		e2 = err;
 		if (e2 > (-(line.dx)))
 		{

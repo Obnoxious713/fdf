@@ -15,8 +15,7 @@
 
 void 		draw(t_mlx *mlx)
 {
-	// blg(mlx->map.vectors[0].x, mlx->map.vectors[0].y,
-		// mlx->map.vectors[mlx->map.rows].x, mlx->map.vectors[mlx->map.cols].x, mlx);
+	// blg(77, 77, 177, 177, mlx);
 	// vlg(77, 77, 177, mlx);
 	// hlg(77, 177, 177, mlx);
 	int		r;
@@ -31,34 +30,31 @@ void 		draw(t_mlx *mlx)
 	r = mlx->map.rows; // 20
 	c = mlx->map.cols; // 11
 	printf("%d, %d\n", r, c);
-	i = -1;
-	ii = -1;
-	iii = -1;
-	while (++ii < r)
+	iii = 0;
+	while (iii < WIN_HEIGHT)
 	{
-		i = -1;
-		while (++i < r)
+		ii = -1;
+		while (++ii < r)
 		{
-			vlg(points[ii].x, points[i].y, points[i + 1].y, mlx);
+			i = -1;
+			while (++i < r)
+				vlg(points[ii].x, points[i + iii].y, points[i + 1 + iii].y, mlx);
 		}
-		//ii += 20;
+		iii += 20;
 	}
-	i = -1;
-	ii = 0;
-	while (ii < c)
+	iii = 0;
+	while (iii < WIN_WIDTH)
 	{
-		i = -1;
-		while (++i < r)
+		ii = 0;
+		while (ii < c)
 		{
-			hlg(points[i].x, points[i + 1].x, points[ii].y, mlx);
+			i = -1;
+			while (++i < r)
+				hlg(points[i].x, points[i + 1].x, points[ii + iii].y, mlx);
+			ii += 20;
 		}
-		ii += 20;
+		iii += 20;
 	}
-	//blg(points[0].x, points[r].x, points[0].y, points[c].y, mlx);
-	// vlg(points[ii].x, points[i].y, points[c].y, mlx);
-	// hlg(points[i].x, points[i + 1].x, points[ii].y, mlx);
-	// vlg(points[ii].x, points[i].y, points[i + 1].y, mlx);
-	//draw2(mlx, points);
 }
 
 // void 		draw2(t_mlx *mlx, t_vector *points)
@@ -70,15 +66,20 @@ void 		draw(t_mlx *mlx)
 // 	r = mlx->map.rows;
 // 	c = mlx->map.cols;
 // 	ii = -1;
-// 	while (++ii < c)
+// 	while (++ii < r)
 // 	{
 // 		i = -1;
 // 		while (++i < r)
-// 		{
-// 			vlg(points[i].x, points[i].y, points[c].y, mlx);
-// 		}
-// 		// hlg(points[i].x, points[i + 1].x, points[ii].y, mlx);
-// 		// vlg(points[ii].x, points[i].y, points[i + 1].y, mlx);
+// 			vlg(points[ii].x, points[i].y, points[i + 1].y, mlx);
+// 	}
+// 	i = -1;
+// 	ii = 0;
+// 	while (ii < c)
+// 	{
+// 		i = -1;
+// 		while (++i < r)
+// 			hlg(points[i].x, points[i + 1].x, points[ii].y, mlx);
+// 		ii += 20;
 // 	}
 // }
 
@@ -172,15 +173,15 @@ void		set_cord(t_mlx *mlx, t_file *file)
 		r = -1;
 		while (++r < mlx->map.rows)
 		{
-			points[++i].x = r * 17;
-			points[i].y = c * 17;
+			points[++i].x = r * 20;
+			points[i].y = c * 20;
 			// if ((matrix[c][r] != ' ' && matrix[c][r] != '\n')
 			// 	&& (matrix[c][r + 1] != ' ' && matrix[c][r + 1] != '\n'))
 			// {
 			// 		dd = &matrix[c][r];
 			// 		ft_strcat(dd, &matrix[c][r + 1]);
 			// }
-			// printf("(%d, %d)\n\n", points[i].x, points[i].y);
+			printf("(%d, %d)\n\n", points[i].x, points[i].y);
 		}
 	}
 	mlx->map.vectors = points;
@@ -194,10 +195,10 @@ int			key_pressed(int keycode, t_mlx *mlx)
 		exit(0);
 	else if (keycode == 49)
 		mlx_clear_window(mlx->mlx, mlx->win);
-	else if (keycode == 1)
-		mlx_string_put(mlx->mlx, mlx->win, 7, 7, DGREY, "fdf mlx 42");
+	else if (keycode == 13)
+		mlx_string_put(mlx->mlx, mlx->win, 7, 7, DGREY, "Click to display image");
 	else
-		ft_putendl("press 'space' to clear screen or 'esc' to exit");
+		ft_putendl("press 'space' to clear screen 'w' to show string or 'esc' to exit");
 	return (0);
 }
 
@@ -209,8 +210,14 @@ int			mouse_clicked(int button, int x, int y, t_mlx *mlx)
 	ft_putstr(ft_itoa(x));
 	ft_putstr("	y cord: ");
 	ft_putendl(ft_itoa(y));
-	if ((x >= 50 && x <= 150) && (y >= 50 && y <= 150))
+	if ((x >= 50 && x <= 350) && (y >= 50 && y <= 350))
 		mlx_clear_window(mlx->mlx, mlx->win);
+	if (((x >= 0 && x <= 50) || (x >= 350 && x <= 400))
+		&& ((y >= 0 && y <= 50) || (y >= 350 && y <= 400)))
+	{
+		mlx_clear_window(mlx->mlx, mlx->win);
+		mlx_string_put(mlx->mlx, mlx->win, 7, 7, DGREY, "Click to display image");
+	}
 	draw(mlx);
 	return (0);
 }
@@ -262,7 +269,7 @@ int			main(int ac, char **av)
 	mlx.file = av[1];
 	file = *(t_file*)ft_memalloc(sizeof(file));
 	read_file(&mlx, &file);
-	mlx_string_put(mlx.mlx, mlx.win, 7, 7, DGREY, "fdf mlx 42");
+	mlx_string_put(mlx.mlx, mlx.win, 7, 7, DGREY, "Click to display image");
 	mlx_key_hook(mlx.win, key_pressed, &mlx);
 	mlx_mouse_hook(mlx.win, mouse_clicked, &mlx);
 	mlx_loop(mlx.mlx);
