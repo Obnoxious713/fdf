@@ -54,9 +54,9 @@ void		vlg(int x, int y0, int y1, t_mlx *mlx)
 	while (y0 != y1)
 	{
 		if (y0 < y1)
-			mlx_pixel_put(mlx->mlx, mlx->win, x, y0++, PURPLE);
+			mlx_pixel_put(mlx->mlx, mlx->win, x, y0++, mlx->map.vectors->color);
 		else if (y0 > y1)
-			mlx_pixel_put(mlx->mlx, mlx->win, x, y0--, PURPLE);
+			mlx_pixel_put(mlx->mlx, mlx->win, x, y0--, mlx->map.vectors->color);
 	}
 }
 
@@ -65,9 +65,9 @@ void		hlg(int x0, int x1, int y, t_mlx *mlx)
 	while (x0 != x1)
 	{
 		if (x0 < x1)
-			mlx_pixel_put(mlx->mlx, mlx->win, x0++, y, PURPLE);
+			mlx_pixel_put(mlx->mlx, mlx->win, x0++, y, mlx->map.vectors->color);
 		else if (x0 > x1)
-			mlx_pixel_put(mlx->mlx, mlx->win, x0--, y, PURPLE);
+			mlx_pixel_put(mlx->mlx, mlx->win, x0--, y, mlx->map.vectors->color);
 	}
 }
 
