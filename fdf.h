@@ -51,12 +51,14 @@ typedef struct		s_line
 
 typedef struct		s_img
 {
+	int				bpp;
 	int				color_val;
 	int				endian;
 	int				line_size;
 	void			*img;
-	int				*img_data;
-	int				img_width;
+	int				*data;
+	int				width;
+	int				height
 }					t_img;
 
 typedef struct		s_vector
@@ -118,9 +120,17 @@ typedef struct		s_mlx
 /*
 ** ------ PUBLIC FUNCTIONS ------
 */
-void		blg(int	x0, int y0, int x1, int y1, t_mlx *mlx);
-void		vlg(int x, int y0, int y1, t_mlx *mlx);
-void		hlg(int x0, int x1, int y, t_mlx *mlx);
+void			blg(int	x0, int y0, int x1, int y1, t_mlx *mlx);
+void			vlg(int x, int y0, int y1, t_mlx *mlx);
+void			hlg(int x0, int x1, int y, t_mlx *mlx);
+void 			put_img_square(t_mlx *mlx);
+void 			prep(t_mlx *mlx, t_vecotr *vect);
+void 			set_scale(t_mlx *mlx);
+float			set_theta(int degrees);
+void			set_color(t_vector *vect, t_map *map);
+// void			rot_z3d(double theta, t_mlx *mlx);
+// void			rot_y3d(double theta, t_mlx *mlx);
+// void			rot_x3d(double theta, t_mlx *mlx);
 // int			b_line_gen(void *mlx_ptr, void *win_ptr, t_2d *cord, t_2d *points);
 // int				b_line_gen(void *mlx_ptr, void *win_ptr, t_2d *end_points, t_2d *points);
 // void			fdf(void *mlx_ptr, void *win_ptr);

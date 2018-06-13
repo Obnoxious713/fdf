@@ -77,11 +77,6 @@ void 		draw2(t_mlx *mlx)
 			mlx->map.vectors->color = B_ORCHID;
 			while (++i < r)
 				vlg(points[ii].x, points[i + iii].y, points[i + 1 + iii].y, mlx);
-			// if (points[i + iii].z != 0)
-			// {
-			// 	mlx->map.vectors->color = WHITE;
-			// 	blg(points[ii].x, points[ii].x, points[i + iii].y, points[i + 1 + iii].y, mlx);
-			// }
 		}
 		ii = 0;
 		while (ii < c)
@@ -133,6 +128,52 @@ void 		draw3(t_mlx *mlx)
 	}
 }
 
+void 		draw4(t_mlx *mlx)
+{
+	int		r;
+	int		c;
+	int		i;
+	t_vector	*points;
+	int		ii;
+	int		iii;
+
+	points = mlx->map.vectors;
+	r = mlx->map.rows; // 20
+	c = mlx->map.cols; // 11
+	printf("%d, %d\n", r, c);
+	iii = 0;
+	while (iii < WIN_HEIGHT)
+	{
+		ii = -1;
+		while (++ii < r)
+		{
+			i = -1;
+			mlx->map.vectors->color = RED;
+			while (++i < r)
+			{
+				if (points[i].z != 0)
+					mlx_pixel_put(mlx->mlx, mlx->win, points[ii].x, points[i + iii].y, WHITE);
+				// else
+				// 	vlg(points[ii].x, points[i + iii].y, points[i + 1 + iii].y, mlx);
+			}
+		}
+		ii = 0;
+		while (ii < c)
+		{
+			i = -1;
+			mlx->map.vectors->color = BLUE;
+			while (++i < r)
+			{
+				if (points[i].z != 0)
+					mlx_pixel_put(mlx->mlx, mlx->win, points[ii].x, points[i + iii].y, WHITE);
+				// else
+				// 	hlg(points[i].x, points[i + 1].x, points[ii + iii].y, mlx);
+			}
+			ii += r;
+		}
+		iii += r;
+	}
+}
 
 // char		**matrix_call(t_vector *vect)
 // {
@@ -244,10 +285,14 @@ int			key_pressed(int keycode, t_mlx *mlx)
 	ft_putendl(ft_itoa(keycode));
 	if (keycode == 53)
 		exit(0);
+	else if (keycode == 34)
+		put_img_square(mlx);
 	else if (keycode == 49)
 		mlx_clear_window(mlx->mlx, mlx->win);
 	else if (keycode == 13)
 		mlx_string_put(mlx->mlx, mlx->win, 7, 7, DGREY, "Click to display image");
+	else if (keycode == 12)
+		mlx_put_image_to_window(mlx->mlx, mlx->win, mlx->img.img, 400, 400);
 	else
 		ft_putendl("press 'space' to clear screen 'w' to show string or 'esc' to exit");
 	return (0);
@@ -261,20 +306,12 @@ int			mouse_clicked(int button, int x, int y, t_mlx *mlx)
 	ft_putstr(ft_itoa(x));
 	ft_putstr("	y cord: ");
 	ft_putendl(ft_itoa(y));
-	if ((x >= 50 && x <= 350) && (y >= 50 && y <= 350))
+	if ((x >= 0 && x <= 50) && (y >= 0 && y <= 50))
 		mlx_clear_window(mlx->mlx, mlx->win);
-	if (((x >= 0 && x <= 50) || (x >= 350 && x <= 400))
-		&& ((y >= 0 && y <= 50) || (y >= 350 && y <= 400)))
-	{
-		mlx_clear_window(mlx->mlx, mlx->win);
-		mlx_string_put(mlx->mlx, mlx->win, 7, 7, DGREY, "Click to display image");
-		draw2(mlx);
-	}
-	else if ((x >= 50 && x <= 177) && (y >= 0 && y <= 50))
-	{
-		mlx_clear_window(mlx->mlx, mlx->win);
+	if ((x >= 0 && x <= 133) && (y >= 0 && y <= 400))
 		draw3(mlx);
-	}
+	else if ((x >= 134 && x <= 266) && (y >= 0 && y <= 400))
+		draw2(mlx);
 	else
 		draw(mlx);
 	return (0);
@@ -325,6 +362,7 @@ int			main(int ac, char **av)
 	mlx.mlx = mlx_init();
 	mlx.win = mlx_new_window(mlx.mlx, WIN_WIDTH, WIN_HEIGHT, "fdf");
 	mlx.file = av[1];
+	mlx.img.img = mlx_new_image(mlx.mlx, WIN_WIDTH, WIN_HEIGHT);
 	file = *(t_file*)ft_memalloc(sizeof(file));
 	read_file(&mlx, &file);
 	mlx_string_put(mlx.mlx, mlx.win, 7, 7, DGREY, "Click to display image");
