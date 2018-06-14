@@ -29,6 +29,7 @@ typedef struct		s_list
 }					t_list;
 
 int					ft_atoi(const char *str);
+int					ft_atoi_base(const char *str, int base);
 void				ft_bzero(void *s, size_t n);
 int					ft_isalnum(int c);
 int					ft_isalpha(int c);
@@ -91,6 +92,7 @@ t_list				*ft_lstmap(t_list *lst, t_list *(*f)(t_list *elem));
 void				ft_lstprint(t_list *list);
 void				ft_putstrarr(char **strarr);
 void				ft_strrep(char *str, char ch1, char ch2);
+void				ft_free_arr(void **arr);
 // void				ft_matcpy(int src[4][4], int dest[4][4]);
 // void				ft_matmult(int mat1[4][4], int mat2[4][4], int dst[4][4]);
 // void				ft_vec_by_mat(t_3D *destin, t_3d *source, int mat[4][4])

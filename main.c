@@ -13,11 +13,129 @@
 #include "libft/libft.h"
 #include <stdio.h>
 
+void 			img_clear(t_mlx *mlx)
+{
+	if (mlx->mode == 1)
+		ft_bzero(mlx->img.data, sizeof(int) * mlx->img.width * mlx->img.height);
+	else
+		mlx_clear_window(mlx->mlx, mlx->win);
+}
+
+void 		draw_cube(t_mlx *mlx)
+{
+	t_file		file;
+
+	file = *(t_file*)ft_memalloc(sizeof(file));
+	read_file(mlx, &file);
+	mlx->map.scale = 10;
+	set_cord(mlx, &file);
+	draw_c(mlx);
+	mlx->map.move_x = 80;
+	mlx->map.move_y = 80;
+	connect_points(mlx);
+	draw_c(mlx);
+}
+
+void 		connect_points(t_mlx *mlx)
+{
+	t_vector	*points;
+	// t_vector	pre;
+	t_iterator	i;
+	// int			ii;
+	int		*color;
+
+	color = (int*)ft_memalloc(sizeof(*color) * 9);
+	points = mlx->map.vectors;
+	i.x = mlx->map.rows;
+	i.y = mlx->map.cols;
+	i.i = -1;
+	color[0] = RED;
+	color[1] = GREEN;
+	color[2] = BLUE;
+	color[3] = PURPLE;
+	color[4] = WHITE;
+	color[5] = GREY;
+	color[6] = DGREY;
+	color[7] = AMETHYST;
+	color[8] = G_APPLE;
+	color[9] = B_ORCHID;
+	while (++i.i < i.y + mlx->map.move_y)
+	{
+		i.z = -1;
+		while (++i.z < i.x + mlx->map.move_x)
+		{
+			if (i.z < 10)
+				mlx->map.vectors->color = color[i.z];
+			blg(points[i.z].x, points[i.i].y, points[i.z].x + mlx->map.move_x,
+				points[i.i].y + mlx->map.move_y, mlx);
+		}
+	}
+}
+
+void 		draw_c(t_mlx *mlx)
+{
+	int		r;
+	int		c;
+	int		i;
+	t_vector	*points;
+	int		ii;
+	int		iii;
+	int		*color;
+
+	points = mlx->map.vectors;
+	r = mlx->map.rows; // 20
+	c = mlx->map.cols; // 11
+	color = (int*)ft_memalloc(sizeof(*color) * 9);
+	color[0] = RED;
+	color[1] = GREEN;
+	color[2] = BLUE;
+	color[3] = PURPLE;
+	color[4] = WHITE;
+	color[5] = GREY;
+	color[6] = DGREY;
+	color[7] = AMETHYST;
+	color[8] = G_APPLE;
+	color[9] = B_ORCHID;
+	iii = 0;
+	while (iii < WIN_HEIGHT)
+	{
+		ii = -1;
+		while (++ii < r)
+		{
+			i = -1;
+			while (++i < r)
+			{
+				if (i < 10)
+					mlx->map.vectors->color = color[i];
+				else
+					mlx->map.vectors->color = RED;
+				vlg(points[ii].x  + mlx->map.move_x,
+					points[i + iii].y + mlx->map.move_y,
+					points[i + 1 + iii].y + mlx->map.move_y, mlx);
+			}
+		}
+		ii = 0;
+		while (ii < c)
+		{
+			i = -1;
+			while (++i < r)
+			{
+				if (i < 10)
+					mlx->map.vectors->color = color[i];
+				else
+					mlx->map.vectors->color = RED;
+				hlg(points[i].x  + mlx->map.move_x,
+					points[i + 1].x + mlx->map.move_x,
+					points[ii + iii].y + mlx->map.move_y, mlx);
+			}
+			ii += r;
+		}
+		iii += r;
+	}
+}
+
 void 		draw(t_mlx *mlx)
 {
-	// blg(77, 77, 177, 177, mlx);
-	// vlg(77, 77, 177, mlx);
-	// hlg(77, 177, 177, mlx);
 	int		r;
 	int		c;
 	int		i;
@@ -25,7 +143,6 @@ void 		draw(t_mlx *mlx)
 	int		ii;
 	int		iii;
 
-	// points = (t_vector*)ft_memalloc(sizeof(*points) * 777);
 	points = mlx->map.vectors;
 	r = mlx->map.rows; // 20
 	c = mlx->map.cols; // 11
@@ -37,7 +154,6 @@ void 		draw(t_mlx *mlx)
 		while (++ii < r)
 		{
 			i = -1;
-			mlx->map.vectors->color = AMETHYST;
 			while (++i < r)
 				vlg(points[ii].x, points[i + iii].y, points[i + 1 + iii].y, mlx);
 		}
@@ -45,7 +161,7 @@ void 		draw(t_mlx *mlx)
 		while (ii < c)
 		{
 			i = -1;
-			mlx->map.vectors->color = G_APPLE;
+			mlx->map.vectors->color = AMETHYST;
 			while (++i < r)
 				hlg(points[i].x, points[i + 1].x, points[ii + iii].y, mlx);
 			ii += r;
@@ -77,11 +193,6 @@ void 		draw2(t_mlx *mlx)
 			mlx->map.vectors->color = B_ORCHID;
 			while (++i < r)
 				vlg(points[ii].x, points[i + iii].y, points[i + 1 + iii].y, mlx);
-			// if (points[i + iii].z != 0)
-			// {
-			// 	mlx->map.vectors->color = WHITE;
-			// 	blg(points[ii].x, points[ii].x, points[i + iii].y, points[i + 1 + iii].y, mlx);
-			// }
 		}
 		ii = 0;
 		while (ii < c)
@@ -133,6 +244,52 @@ void 		draw3(t_mlx *mlx)
 	}
 }
 
+void 		draw4(t_mlx *mlx)
+{
+	int		r;
+	int		c;
+	int		i;
+	t_vector	*points;
+	int		ii;
+	int		iii;
+
+	points = mlx->map.vectors;
+	r = mlx->map.rows; // 20
+	c = mlx->map.cols; // 11
+	printf("%d, %d\n", r, c);
+	iii = 0;
+	while (iii < WIN_HEIGHT)
+	{
+		ii = -1;
+		while (++ii < r)
+		{
+			i = -1;
+			mlx->map.vectors->color = RED;
+			while (++i < r)
+			{
+				if (points[i].z != 0)
+					mlx_pixel_put(mlx->mlx, mlx->win, points[ii].x, points[i + iii].y, WHITE);
+				// else
+				// 	vlg(points[ii].x, points[i + iii].y, points[i + 1 + iii].y, mlx);
+			}
+		}
+		ii = 0;
+		while (ii < c)
+		{
+			i = -1;
+			mlx->map.vectors->color = BLUE;
+			while (++i < r)
+			{
+				if (points[i].z != 0)
+					mlx_pixel_put(mlx->mlx, mlx->win, points[ii].x, points[i + iii].y, WHITE);
+				// else
+				// 	hlg(points[i].x, points[i + 1].x, points[ii + iii].y, mlx);
+			}
+			ii += r;
+		}
+		iii += r;
+	}
+}
 
 // char		**matrix_call(t_vector *vect)
 // {
@@ -223,8 +380,8 @@ void		set_cord(t_mlx *mlx, t_file *file)
 		r = -1;
 		while (++r < mlx->map.rows)
 		{
-			points[++i].x = r * 20;
-			points[i].y = c * 20;
+			points[++i].x = r * mlx->map.scale;
+			points[i].y = c * mlx->map.scale;
 			if ((matrix[c][r] > '0' && matrix[c][r] <= '9')
 				&& (matrix[c][r + 1] >= '0' && matrix[c][r + 1] <= '9'))
 			{
@@ -232,10 +389,11 @@ void		set_cord(t_mlx *mlx, t_file *file)
 					ft_strjoin(dd, &matrix[c][r - 1]);
 					points[i].z = ft_atoi(dd);
 			}
-			printf("(%d, %d, %d)\n\n", points[i].x, points[i].y, points[i].z);
+			printf("points[%d] = (%d, %d, %d)\n\n", i, points[i].x, points[i].y, points[i].z);
 		}
 	}
 	mlx->map.vectors = points;
+	printf("dim = (%d, %d)\n", mlx->map.rows, mlx->map.cols);
 }
 
 int			key_pressed(int keycode, t_mlx *mlx)
@@ -244,10 +402,16 @@ int			key_pressed(int keycode, t_mlx *mlx)
 	ft_putendl(ft_itoa(keycode));
 	if (keycode == 53)
 		exit(0);
+	// else if (keycode == 34)
+	// 	put_img_square(mlx);
+	// else if (keycode == 35)
+	// 	put_img_square(mlx);
 	else if (keycode == 49)
 		mlx_clear_window(mlx->mlx, mlx->win);
 	else if (keycode == 13)
 		mlx_string_put(mlx->mlx, mlx->win, 7, 7, DGREY, "Click to display image");
+	else if (keycode == 12)
+		mlx_put_image_to_window(mlx->mlx, mlx->win, mlx->img.img, 400, 400);
 	else
 		ft_putendl("press 'space' to clear screen 'w' to show string or 'esc' to exit");
 	return (0);
@@ -261,22 +425,15 @@ int			mouse_clicked(int button, int x, int y, t_mlx *mlx)
 	ft_putstr(ft_itoa(x));
 	ft_putstr("	y cord: ");
 	ft_putendl(ft_itoa(y));
-	if ((x >= 50 && x <= 350) && (y >= 50 && y <= 350))
+	if ((x >= 0 && x <= 50) && (y >= 0 && y <= 50))
 		mlx_clear_window(mlx->mlx, mlx->win);
-	if (((x >= 0 && x <= 50) || (x >= 350 && x <= 400))
-		&& ((y >= 0 && y <= 50) || (y >= 350 && y <= 400)))
-	{
-		mlx_clear_window(mlx->mlx, mlx->win);
-		mlx_string_put(mlx->mlx, mlx->win, 7, 7, DGREY, "Click to display image");
-		draw2(mlx);
-	}
-	else if ((x >= 50 && x <= 177) && (y >= 0 && y <= 50))
-	{
-		mlx_clear_window(mlx->mlx, mlx->win);
-		draw3(mlx);
-	}
-	else
-		draw(mlx);
+	// if ((x >= 0 && x <= 133) && (y >= 0 && y <= 400))
+	// 	draw3(mlx);
+	// else if ((x >= 134 && x <= 266) && (y >= 0 && y <= 400))
+	// 	draw2(mlx);
+	// else
+	// 	draw(mlx);
+	draw_cube(mlx);
 	return (0);
 }
 
@@ -284,9 +441,8 @@ void		read_file(t_mlx *mlx, t_file *file)
 {
 	int		i;
 
-	if (!(file->fd = open(mlx->file, O_RDONLY)))
-		exit(1);
-	file->cont = (char*)ft_memalloc(sizeof(*file));
+	check_err((file->fd = open(mlx->file, O_RDONLY)), "Failed to open file");
+	file->cont = (char*)ft_memalloc(sizeof(*file->cont));
 	while ((file->ret = read(file->fd, &file->buf, BUF_SIZE)))
 	{
 		file->buf[file->ret] = '\0';
@@ -306,7 +462,6 @@ void		read_file(t_mlx *mlx, t_file *file)
 	mlx->map.cols = i;
 	free(file->cont);
 	free(file->split_x);
-	set_cord(mlx, file);;
 }
 
 void		usage(void)
@@ -318,15 +473,21 @@ void		usage(void)
 int			main(int ac, char **av)
 {
 	t_mlx	mlx;
-	t_file	file;
+
 
 	if (ac != 2)
 		usage();
 	mlx.mlx = mlx_init();
 	mlx.win = mlx_new_window(mlx.mlx, WIN_WIDTH, WIN_HEIGHT, "fdf");
 	mlx.file = av[1];
-	file = *(t_file*)ft_memalloc(sizeof(file));
-	read_file(&mlx, &file);
+	mlx.img.width = WIN_WIDTH - OFF_X;
+	mlx.img.height = WIN_HEIGHT - OFF_Y;
+	mlx.img.img = mlx_new_image(mlx.mlx, WIN_WIDTH, WIN_HEIGHT);
+	mlx.img.data = (int*)mlx_get_data_addr(mlx.img.img, &mlx.img.bpp, &mlx.img.line_size, &mlx.img.endian);
+	mlx.shift = 0;
+	mlx.mode = 1;
+	mlx.color_on = -1;
+	// set_up(&mlx);
 	mlx_string_put(mlx.mlx, mlx.win, 7, 7, DGREY, "Click to display image");
 	mlx_key_hook(mlx.win, key_pressed, &mlx);
 	mlx_mouse_hook(mlx.win, mouse_clicked, &mlx);

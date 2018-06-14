@@ -83,7 +83,9 @@ SRC = ft_atoi.c \
 				ft_lstnew.c \
 				ft_lstprint.c \
 				ft_putstrarr.c \
-				ft_strrep.c
+				ft_strrep.c \
+				ft_free_arr.c \
+				ft_atoi_base.c
 				# ft_matcpy.c \
 				# ft_matmult.c \
 				# ft_vec_by_mat.c
