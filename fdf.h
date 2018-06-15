@@ -73,7 +73,6 @@ typedef struct		s_vector
 	int				y;
 	int				z;
 	int				color;
-	int				*color_change;
 }					t_vector;
 
 typedef struct		s_file
@@ -150,6 +149,7 @@ void			set_cord(t_mlx *mlx, t_file *file);
 void 			draw(t_mlx *mlx);
 void 			draw_c(t_mlx *mlx);
 void 			connect_points(t_mlx *mlx);
+void 			draw_s(t_mlx *mlx);
 // void			rot_z3d(double theta, t_mlx *mlx);
 // void			rot_y3d(double theta, t_mlx *mlx);
 // void			rot_x3d(double theta, t_mlx *mlx);

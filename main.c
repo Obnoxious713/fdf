@@ -31,9 +31,11 @@ void 		draw_cube(t_mlx *mlx)
 	set_cord(mlx, &file);
 	draw_c(mlx);
 	mlx->map.move_x = 80;
-	mlx->map.move_y = 80;
+	mlx->map.move_y = 40;
 	connect_points(mlx);
 	draw_c(mlx);
+	// mlx->map.center_x = (WIN_WIDTH - (mlx->map.cols * mlx->map.scale)) / 2;
+	// mlx->map.center_y = (WIN_HEIGHT - (mlx->map.rows * mlx->map.scale)) / 2;
 }
 
 void 		connect_points(t_mlx *mlx)
@@ -44,7 +46,7 @@ void 		connect_points(t_mlx *mlx)
 	// int			ii;
 	int		*color;
 
-	color = (int*)ft_memalloc(sizeof(*color) * 9);
+	color = (int*)ft_memalloc(sizeof(*color) * 6);
 	points = mlx->map.vectors;
 	i.x = mlx->map.rows;
 	i.y = mlx->map.cols;
@@ -53,19 +55,18 @@ void 		connect_points(t_mlx *mlx)
 	color[1] = GREEN;
 	color[2] = BLUE;
 	color[3] = PURPLE;
-	color[4] = WHITE;
-	color[5] = GREY;
-	color[6] = DGREY;
-	color[7] = AMETHYST;
-	color[8] = G_APPLE;
-	color[9] = B_ORCHID;
-	while (++i.i < i.y + mlx->map.move_y)
+	color[4] = AMETHYST;
+	color[5] = G_APPLE;
+	color[6] = B_ORCHID;
+	while (++i.i <= (i.y * i.y) + (mlx->map.move_y * 3))
 	{
 		i.z = -1;
-		while (++i.z < i.x + mlx->map.move_x)
+		while (++i.z <= (i.x * i.x) + (mlx->map.move_x * 3))
 		{
-			if (i.z < 10)
-				mlx->map.vectors->color = color[i.z];
+			if (i.z == 0 || i.z == (i.x * i.x) + mlx->map.move_x)
+				mlx->map.vectors->color = color[5];
+			else
+				mlx->map.vectors->color = RED;
 			blg(points[i.z].x, points[i.i].y, points[i.z].x + mlx->map.move_x,
 				points[i.i].y + mlx->map.move_y, mlx);
 		}
@@ -83,19 +84,16 @@ void 		draw_c(t_mlx *mlx)
 	int		*color;
 
 	points = mlx->map.vectors;
-	r = mlx->map.rows; // 20
-	c = mlx->map.cols; // 11
+	r = mlx->map.rows;
+	c = mlx->map.cols;
 	color = (int*)ft_memalloc(sizeof(*color) * 9);
 	color[0] = RED;
 	color[1] = GREEN;
 	color[2] = BLUE;
 	color[3] = PURPLE;
-	color[4] = WHITE;
-	color[5] = GREY;
-	color[6] = DGREY;
-	color[7] = AMETHYST;
-	color[8] = G_APPLE;
-	color[9] = B_ORCHID;
+	color[4] = AMETHYST;
+	color[5] = G_APPLE;
+	color[6] = B_ORCHID;
 	iii = 0;
 	while (iii < WIN_HEIGHT)
 	{
@@ -105,8 +103,8 @@ void 		draw_c(t_mlx *mlx)
 			i = -1;
 			while (++i < r)
 			{
-				if (i < 10)
-					mlx->map.vectors->color = color[i];
+				if ((i == 0) || (i == r - 1))
+					mlx->map.vectors->color = color[2];
 				else
 					mlx->map.vectors->color = RED;
 				vlg(points[ii].x  + mlx->map.move_x,
@@ -120,8 +118,8 @@ void 		draw_c(t_mlx *mlx)
 			i = -1;
 			while (++i < r)
 			{
-				if (i < 10)
-					mlx->map.vectors->color = color[i];
+				if (i == 0 || i == r - 1)
+					mlx->map.vectors->color = color[3];
 				else
 					mlx->map.vectors->color = RED;
 				hlg(points[i].x  + mlx->map.move_x,
@@ -133,234 +131,6 @@ void 		draw_c(t_mlx *mlx)
 		iii += r;
 	}
 }
-
-void 		draw(t_mlx *mlx)
-{
-	int		r;
-	int		c;
-	int		i;
-	t_vector	*points;
-	int		ii;
-	int		iii;
-
-	points = mlx->map.vectors;
-	r = mlx->map.rows; // 20
-	c = mlx->map.cols; // 11
-	printf("%d, %d\n", r, c);
-	iii = 0;
-	while (iii < WIN_HEIGHT)
-	{
-		ii = -1;
-		while (++ii < r)
-		{
-			i = -1;
-			while (++i < r)
-				vlg(points[ii].x, points[i + iii].y, points[i + 1 + iii].y, mlx);
-		}
-		ii = 0;
-		while (ii < c)
-		{
-			i = -1;
-			mlx->map.vectors->color = AMETHYST;
-			while (++i < r)
-				hlg(points[i].x, points[i + 1].x, points[ii + iii].y, mlx);
-			ii += r;
-		}
-		iii += r;
-	}
-}
-
-void 		draw2(t_mlx *mlx)
-{
-	int		r;
-	int		c;
-	int		i;
-	t_vector	*points;
-	int		ii;
-	int		iii;
-
-	points = mlx->map.vectors;
-	r = mlx->map.rows; // 20
-	c = mlx->map.cols; // 11
-	printf("%d, %d\n", r, c);
-	iii = 0;
-	while (iii < WIN_HEIGHT)
-	{
-		ii = -1;
-		while (++ii < r)
-		{
-			i = -1;
-			mlx->map.vectors->color = B_ORCHID;
-			while (++i < r)
-				vlg(points[ii].x, points[i + iii].y, points[i + 1 + iii].y, mlx);
-		}
-		ii = 0;
-		while (ii < c)
-		{
-			i = -1;
-			mlx->map.vectors->color = PURPLE;
-			while (++i < r)
-				hlg(points[i].x, points[i + 1].x, points[ii + iii].y, mlx);
-			ii += r;
-		}
-		iii += r;
-	}
-}
-
-void 		draw3(t_mlx *mlx)
-{
-	int		r;
-	int		c;
-	int		i;
-	t_vector	*points;
-	int		ii;
-	int		iii;
-
-	points = mlx->map.vectors;
-	r = mlx->map.rows; // 20
-	c = mlx->map.cols; // 11
-	printf("%d, %d\n", r, c);
-	iii = 0;
-	while (iii < WIN_HEIGHT)
-	{
-		ii = -1;
-		while (++ii < r)
-		{
-			i = -1;
-			mlx->map.vectors->color = RED;
-			while (++i < r)
-				vlg(points[ii].x, points[i + iii].y, points[i + 1 + iii].y, mlx);
-		}
-		ii = 0;
-		while (ii < c)
-		{
-			i = -1;
-			mlx->map.vectors->color = BLUE;
-			while (++i < r)
-				hlg(points[i].x, points[i + 1].x, points[ii + iii].y, mlx);
-			ii += r;
-		}
-		iii += r;
-	}
-}
-
-void 		draw4(t_mlx *mlx)
-{
-	int		r;
-	int		c;
-	int		i;
-	t_vector	*points;
-	int		ii;
-	int		iii;
-
-	points = mlx->map.vectors;
-	r = mlx->map.rows; // 20
-	c = mlx->map.cols; // 11
-	printf("%d, %d\n", r, c);
-	iii = 0;
-	while (iii < WIN_HEIGHT)
-	{
-		ii = -1;
-		while (++ii < r)
-		{
-			i = -1;
-			mlx->map.vectors->color = RED;
-			while (++i < r)
-			{
-				if (points[i].z != 0)
-					mlx_pixel_put(mlx->mlx, mlx->win, points[ii].x, points[i + iii].y, WHITE);
-				// else
-				// 	vlg(points[ii].x, points[i + iii].y, points[i + 1 + iii].y, mlx);
-			}
-		}
-		ii = 0;
-		while (ii < c)
-		{
-			i = -1;
-			mlx->map.vectors->color = BLUE;
-			while (++i < r)
-			{
-				if (points[i].z != 0)
-					mlx_pixel_put(mlx->mlx, mlx->win, points[ii].x, points[i + iii].y, WHITE);
-				// else
-				// 	hlg(points[i].x, points[i + 1].x, points[ii + iii].y, mlx);
-			}
-			ii += r;
-		}
-		iii += r;
-	}
-}
-
-// char		**matrix_call(t_vector *vect)
-// {
-// 	char	**matrix;
-// 	int		x;
-// 	int		y;
-// 	int		i;
-//
-// 	matrix = (char**)ft_memalloc(sizeof(**matrix));
-// 	matrix[0] = "0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0";
-// 	matrix[1] = "0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0";
-// 	matrix[2] = "0  0  0 10 10  0  0 10 10  0  0  0 10 10 10 10 10  0  0  0";
-// 	matrix[3] = "0  0  0 10 10  0  0 10 10  0  0  0  0  0  0  0 10 10  0  0";
-// 	matrix[4] = "0  0  0 10 10  0  0 10 10  0  0  0  0  0  0  0 10 10  0  0";
-// 	matrix[5] = "0  0  0 10 10 10 10 10 10  0  0  0  0 10 10 10 10  0  0  0";
-// 	matrix[6] = "0  0  0  0 10 10 10 10 10  0  0  0 10 10  0  0  0  0  0  0";
-// 	matrix[7] = "0  0  0  0  0  0  0 10 10  0  0  0 10 10  0  0  0  0  0  0";
-// 	matrix[8] = "0  0  0  0  0  0  0 10 10  0  0  0 10 10 10 10 10 10  0  0";
-// 	matrix[9] = "0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0";
-// 	matrix[10] = "0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0";
-// 	i = -1;
-// 	y = -1;
-// 	while (matrix[++y] != NULL)
-// 	{
-// 		x = -1;
-// 		while (matrix[y][++x] != '\0')
-// 		{
-// 			vect[x].x = x;
-// 			vect[y].y = y;
-// 		}
-// 		i++;
-// 	}
-// 	return (matrix);
-// }
-
-// void 		draw2(t_mlx *mlx)
-// {
-// 	int		*x;
-// 	int		*y;
-// 	int		i;
-// 	int		yi;
-// 	int		xi;
-// 	int		xx;
-// 	int		yy;
-// 	char	**matrix;
-// 	t_vector	*vect;
-//
-// 	vect = (t_vector*)ft_memalloc(sizeof(*vect));
-// 	matrix = matrix_call(vect);
-// 	i = 0;
-// 	xi = -1;
-// 	yi = -1;
-// 	x = (int*)ft_memalloc(sizeof(*x));
-// 	y = (int*)ft_memalloc(sizeof(*y));
-// 	while (matrix[++yi] != NULL)
-// 	{
-// 		while (matrix[yi][++xi] != '\0')
-// 		{
-// 			y[i] = mlx->map.vectors[i].y;
-// 			x[i] = mlx->map.vectors[i].x;
-// 			xx = -1;
-// 			yy = -1;
-// 			// while (++yy < 277) // upper left v
-// 			// 	mlx_pixel_put(mlx->mlx, mlx->win, x[i], y[i], RED);
-// 			// while (++xx < 277) // top left h
-// 			// 	mlx_pixel_put(mlx->mlx, mlx->win, x[i], y[i], PURPLE);
-// 			draw(mlx);
-// 			i++;
-// 		}
-// 	}
-// }
 
 void		set_cord(t_mlx *mlx, t_file *file)
 {
@@ -427,12 +197,6 @@ int			mouse_clicked(int button, int x, int y, t_mlx *mlx)
 	ft_putendl(ft_itoa(y));
 	if ((x >= 0 && x <= 50) && (y >= 0 && y <= 50))
 		mlx_clear_window(mlx->mlx, mlx->win);
-	// if ((x >= 0 && x <= 133) && (y >= 0 && y <= 400))
-	// 	draw3(mlx);
-	// else if ((x >= 134 && x <= 266) && (y >= 0 && y <= 400))
-	// 	draw2(mlx);
-	// else
-	// 	draw(mlx);
 	draw_cube(mlx);
 	return (0);
 }

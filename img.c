@@ -48,11 +48,11 @@
 // 	mlx->map.move_y = 0;
 // 	set_scale(mlx);
 // 	mlx->map.center_x = (WIN_WIDTH - (mlx->map.cols * mlx->map.scale)) / 2;
-// 	mlx->map.center_x = (WIN_HEIGHT - (mlx->map.rows * mlx->map.scale)) / 2;
+// 	mlx->map.center_y = (WIN_HEIGHT - (mlx->map.rows * mlx->map.scale)) / 2;
 // 	mlx->map.z_height = 1;
 // 	put_img_map(mlx);
 // }
-// 
+//
 // void 			put_img_map(t_mlx *mlx)
 // {
 // 	int			i;
