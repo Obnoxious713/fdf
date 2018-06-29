@@ -32,6 +32,10 @@ void		blg(int	x0, int y0, int x1, int y1, t_mlx *mlx)
 		err = (line.dx)/2;
 	else
 		err = (-(line.dy))/2;
+	if (x0 == x1)
+		vlg(x0, y0, y1, mlx);
+	if (y0 == y1)
+		hlg(x0, x1, y0, mlx);
 	while (x0 != x1 && y0 != y1)
 	{
 		mlx_pixel_put(mlx->mlx, mlx->win, x0, y0, mlx->map.vectors->color);
