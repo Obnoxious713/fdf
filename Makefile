@@ -20,11 +20,11 @@ LINK_MLX = -Lft_libgfx/minilibx_macos_sierra -lmlx
 
 FRAMEWORK = -framework OpenGL -framework AppKit
 
-FLAGS = -Wall -Werror -Wextra -g -fsanitize=address
+FLAGS = -Wall -Werror -Wextra -g# -fsanitize=address
 
 NORM = norminette -R CheckForbiddenSourceHeader
 
-SRC = blg.c
+SRC = blg.c img.c prep.c
 
 OBJ = $(SRC:.c=.o)
 
