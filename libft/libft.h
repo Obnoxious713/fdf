@@ -12,14 +12,14 @@
 
 #ifndef LIBFT_H
 # define LIBFT_H
-
 # include <unistd.h>
 # include <stdlib.h>
 # include <string.h>
+# include <fcntl.h>
+# include <sys/types.h>
+# include <sys/uio.h>
+# include <math.h>
 # include "get_next_line.h"
-# include "../fdf.h"
-// # include "matrix.h"
-// # include "trig.h"
 
 typedef struct		s_list
 {
@@ -92,16 +92,20 @@ t_list				*ft_lstmap(t_list *lst, t_list *(*f)(t_list *elem));
 void				ft_lstprint(t_list *list);
 void				ft_putstrarr(char **strarr);
 void				ft_strrep(char *str, char ch1, char ch2);
-void				ft_free_arr(void **arr);
+void				ft_free_arr(char **arr);
 void				ft_exit(void);
 int					ft_countword(const char *s, char c);
 void 				ft_lstapp(t_list **alst, t_list *new);
+void				ft_error(char *s);
 void				ft_error_unknown(void);
-// void				ft_matcpy(int src[4][4], int dest[4][4]);
-// void				ft_matmult(int mat1[4][4], int mat2[4][4], int dst[4][4]);
-// void				ft_vec_by_mat(t_3D *destin, t_3d *source, int mat[4][4])
+int					get_next_line(const int fd, char **line);
 
 # define MAX(a,b) (a > b ? a : b)
-# define ABS(x) ((x) < 0 ? -(x) : (x));
+# define MIN(a,b) (a < b ? a : b)
+# define ABS(x) ((x > 0) ? x : x * -1)
+int	sin_table[360];
+int cos_table[360];
+# define SIN(x) sin_table[ABS((int)x&359)]
+# define COS(x) cos_table[ABS((int)x&359)]
 
 #endif
