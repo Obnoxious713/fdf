@@ -90,10 +90,8 @@ SRC = ft_atoi.c \
 				ft_exit.c \
 				ft_countword.c \
 				ft_lstapp.c \
-				ft_error_unknown.c
-				# ft_matcpy.c \
-				# ft_matmult.c \
-				# ft_vec_by_mat.c
+				ft_error_unknown.c \
+				get_next_line.c
 OBJ = $(patsubst %.c, %.o, $(SRC))
 # ar == archiver; #
 # c flag == creates lib if it doesn't already exist; #
