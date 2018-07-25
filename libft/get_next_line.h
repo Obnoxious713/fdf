@@ -14,6 +14,7 @@
 # define GET_NEXT_LINE_H
 # define BUFF_SIZE 4
 # define FD_MAX 6144
+# define MAX_FD 1025
 # include <fcntl.h>
 # include <sys/types.h>
 # include <sys/uio.h>
