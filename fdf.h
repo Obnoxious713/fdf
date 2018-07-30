@@ -16,17 +16,19 @@
 /*
 ** ------ LIBRARIES ------
 */
-# include "ft_libgfx/minilibx_macos_sierra/mlx.h"
+# include "libft/libft.h"
+# include "minilibx/mlx.h"
+# include "libgfx/libgfx.h"
 # include <math.h>
+# include <string.h>
+# include <fcntl.h>
+# include <unistd.h>
+# include <errno.h>
+
 
 /*
 ** ------ VARIABLES ------
 */
-# define BUF_SIZE		777
-# define WIN_WIDTH 		400//1080
-# define WIN_HEIGHT 	400//720
-# define WIN_SIZE 		500
-# define IMG_SIZE 		477
 # define RED			0xFF2222
 # define GREEN			0x22FF22
 # define BLUE			0x2222FF
@@ -39,93 +41,50 @@
 # define B_ORCHID		0x1F45FC
 
 /*
-** ------ STRUCTS ------
+** KEYS
 */
-typedef struct		s_line
-{
-	int				dx;
-	int				dy;
-	int				sx;
-	int				sy;
-}					t_line;
 
-typedef struct		s_img
-{
-	int				color_val;
-	int				endian;
-	int				line_size;
-	void			*img;
-	int				*img_data;
-	int				img_width;
-}					t_img;
+# define KEY_ESC 53
+# define KEY_SPACE 49
+# define KEY_R 15
 
-typedef struct		s_vector
-{
-	int				x;
-	int				y;
-	int				z;
-	int				color;
-}					t_vector;
+# define MOUSE_LEFT 1
+# define MOUSE_RIGHT 2
+# define MOUSE_SCROLL_BUTTON 3
+# define MOUSE_SCROLL_UP 4
+# define MOUSE_SCROLL_DOWN 5
 
-typedef struct		s_file
-{
-	char			**split_y;
-	char			**split_x;
-	char			*cont;
-	char			*tmp;
-	char			buf[BUF_SIZE + 1];
-	int				fd;
-	int				ret;
-}					t_file;
+# define KEY_W	13
+# define KEY_S	1
+# define KEY_A	0
+# define KEY_D	2
 
-typedef struct		s_iterator
-{
-	int				i;
-	int				x;
-	int				y;
-	int				z;
-}					t_iterator;
+# define KEY_ONE	83
+# define KEY_TWO	84
+# define KEY_THREE	85
+# define KEY_FOUR	86
+# define KEY_FIVE	87
+# define KEY_SIX	88
+# define KEY_SEVEN	89
+# define KEY_EIGHT	91
+# define KEY_NINE	92
 
-typedef struct		s_map
-{
-	t_vector		*vectors;
-	t_vector		prev;
-	int				rows;
-	int				cols;
-	int				scale;
-	int				max_z;
-	float			z_height;
-	int				center_x;
-	int				center_y;
-	int				rot_x;
-	int				rot_y;
-	int				move_x;
-	int				move_y;
-}					t_map;
-
-typedef struct		s_mlx
-{
-	void			*mlx;
-	void			*win;
-	char			*file;
-	t_img			img;
-	t_map			map;
-	int				shift;
-	int				mode;
-	int				color_on;
-}					t_mlx;
+# define KEY_PLUS   69
+# define KEY_MINUS  78
 
 /*
 ** ------ PUBLIC FUNCTIONS ------
 */
-void		blg(int	x0, int y0, int x1, int y1, t_mlx *mlx);
-void		vlg(int x, int y0, int y1, t_mlx *mlx);
-void		hlg(int x0, int x1, int y, t_mlx *mlx);
-// int			b_line_gen(void *mlx_ptr, void *win_ptr, t_2d *cord, t_2d *points);
-// int				b_line_gen(void *mlx_ptr, void *win_ptr, t_2d *end_points, t_2d *points);
-// void			fdf(void *mlx_ptr, void *win_ptr);
-// int 			key_event(int key, void *param);
-// int 			mouse_event(int key, void *param);
-// void			gfx_setup();
+int					expose_hook(t_data *data);
+int					key_hook(int keycode, t_data *data);
+void				display_usage(char *av);
+void 				display_controls(void);
+void 				draw_map(t_data *data);
+void 				setup_world(t_data *data);
+void 				calc_aligned(t_data *data);
+void 				draw_reload(t_data *data);
+void 				draw(t_data *data);
+int					check_fd(int fd, char *filename);
+t_plot				*parse_file(char *filename);
 
 #endif
