@@ -10,13 +10,14 @@
 #                                                                              #
 # **************************************************************************** #
 
-HEADER = libft.h
+HEADER = -I./includes/libft.h
 
 FLAGS = -Wall -Werror -Wextra -c
 
 NORM = norminette -R CheckForbiddenSourceHeader
 
 NAME = libft.a
+NAME2 = libft
 
 SRC = ft_atoi.c \
 				ft_bzero.c \
@@ -90,32 +91,56 @@ SRC = ft_atoi.c \
 				ft_exit.c \
 				ft_countword.c \
 				ft_lstapp.c \
-				ft_error_unknown.c
-				# ft_matcpy.c \
-				# ft_matmult.c \
-				# ft_vec_by_mat.c
-OBJ = $(patsubst %.c, %.o, $(SRC))
+				ft_error_unknown.c \
+				get_next_line.c \
+				ft_gnl.c \
+				ft_strjoinfree.c
+
+SRCDIR = ./src/
+INCDIR = ./includes/
+OBJDIR = ./obj/
+
+INC = -I./includes
+
+OBJ = $(addprefix $(OBJDIR),$(SRC:.c=.o))
+#OBJ = $(patsubst %.c, %.o, $(SRC))
 # ar == archiver; #
 # c flag == creates lib if it doesn't already exist; #
 # r flag == replace older object files with the new ones; #
 
-all: $(NAME)
+all: src obj inc $(NAME)
 
-$(NAME):
-	@gcc $(FLAGS) $(SRC) -I $(HEADER)
+src:
+	@mkdir -p $(SRCDIR)
+
+obj:
+	@mkdir -p $(OBJDIR)
+
+inc:
+	@mkdir -p $(INCDIR)
+
+$(OBJDIR)%.o:$(SRCDIR)%.c
+	@gcc $(FLAGS) $(INC) -I $(HEADER) -o $@ -c $<
+
+$(NAME): $(OBJ)
+	@echo "-> Creating archive $(NAME)...\n"
 	@ar rc $(NAME) $(OBJ)
 	@ranlib $(NAME)
 
 clean:
-	@/bin/rm -f $(OBJ)
+	@echo "-> Cleaning $(NAME2) object files..."
+	@/bin/rm -rf $(OBJ)
 
-fclean: clean
-	@/bin/rm -f $(NAME)
+fclean:
+	@echo "-> Cleaning $(NAME)..."
+	@/bin/rm -rf $(NAME)
+	@echo "-> Cleaning $(NAME2) object files...\n"
+	@/bin/rm -rf $(OBJ)
 
 re: fclean all
-	@gcc $(FLAGS) $(SRC) -I $(HEADER)
-	@ar rc $(NAME) $(OBJ)
-	@ranlib $(NAME)
+#	@gcc $(FLAGS) $(SRC) -I $(HEADER)
+#	@ar rc $(NAME) $(OBJ)
+#	@ranlib $(NAME)
 
 .PHONY: all clean fclean re
 
