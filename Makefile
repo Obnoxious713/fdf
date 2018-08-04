@@ -12,44 +12,97 @@
 
 NAME = fdf
 
-MLX = ft_libfx
-
-LINK = -Llibft/ -lft
-
-LINK_MLX = -Lft_libgfx/minilibx_macos_sierra -lmlx
-
-FRAMEWORK = -framework OpenGL -framework AppKit
-
 FLAGS = -Wall -Werror -Wextra -g -fsanitize=address
+
+CC = gcc
 
 NORM = norminette -R CheckForbiddenSourceHeader
 
-SRC = blg.c
+SRC = 	main.c \
+		hooks.c \
+		parser.c \
+		renderer.c
 
-OBJ = $(SRC:.c=.o)
+OBJ = $(addprefix $(OBJDIR),$(SRC:.c=.o))
 
-.PHONY: all clean fclean re
+LIBFT = ./libft/libft.a
+LIBFTINC = -I./libft
+LINK_FT = -L./libft -lft
 
-all: $(NAME)
+MLX = ./minilibx/libmlx.a
+MLXINC = -I./minilibx
+LINK_MLX = -L./minilibx -lmlx -framework OpenGL -framework AppKit
 
-libft.a:
-	@make -C libft/
+LIBGFX = ./libgfx/libgfx.a
+LIBGFXINC = -I./libgfx
+LINK_GFX = -L./libgfx -lgfx
 
-$(NAME): libft.a $(OBJ)
-	@gcc -I $(MLX) $(OBJ) $(FLAGS) $(LINK) $(LINK_MLX) $(FRAMEWORK) main.c -o $(NAME)
+SRCDIR = ./src/
+INCDIR = ./includes/
+OBJDIR = ./obj/
 
-%.o: %.c
-	@gcc $(FLAGS) -c $^ -o $@
+LINK = -L./minilibx -lmlx -framework OpenGL -framework AppKit -L./libgfx -lgfx -L./libft -lft
+
+all: obj mlx libgfx libft $(NAME)
+
+gfx:
+	@rm -rf $(NAME)
+	@rm -rf $(OBJDIR)
+	@make -C ./libgfx fclean
+	@make
+
+src:
+	@mkdir -p $(SRCDIR)
+
+obj:
+	@mkdir -p $(OBJDIR)
+
+inc:
+	@mkdir -p $(INCDIR)
+
+$(OBJDIR)%.o:$(SRCDIR)%.c
+	@$(CC) $(FLAGS) $(MLXINC) $(LIBGFXINC) $(LIBFTINC) -I $(INCDIR) -o $@ -c $<
+
+libft: $(LIBFT)
+
+libgfx: $(LIBGFX)
+
+mlx: $(MLX)
+
+$(LIBFT):
+	@make -C ./libft
+
+$(LIBGFX):
+	@make -C ./libgfx
+
+$(MLX):
+	@make -C ./minilibx
+
+$(NAME): $(OBJ)
+	@echo "-> Compiling $(NAME)..."
+	@$(CC) -o $(NAME) $(OBJ) $(LINK_MLX) $(LINK_GFX) $(LINK_FT) -v
+	@echo "...Done"
 
 clean:
-	@rm -f $(OBJ)
-	@make -C libft/ clean
+	@echo "-> Cleaning $(NAME) object files..."
+	@rm -rf $(OBJ)
+	@make -C ./libft clean
+	@make -C ./minilibx clean
+	@make -C ./libgfx clean
 
-fclean: clean
-	@rm -f $(NAME)
-	@make -C libft/ fclean
+fclean:
+	@echo "-> Cleaning $(NAME)...\n "
+	@rm -rf $(NAME)
+	@rm -rf $(OBJ)
+	@make -C ./libft fclean
+	@make -C ./libgfx fclean
+	@make -C ./minilibx clean
 
 re: fclean all
 
 norm:
 	$(NORM)
+
+love: all #credit to gwood / notoriousgtw
+
+.PHONY: all clean fclean re
