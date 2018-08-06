@@ -12,12 +12,16 @@
 
 #include "libft.h"
 
-void 			ft_free_arr(void **arr)
+void			ft_free_arr(char **arr)
 {
 	int			i;
 
-	i = 0;
-	while (arr[i])
-		free(arr[i++]);
+	i = -1;
+	while (arr[++i])
+	{
+		free(arr[i]);
+		arr[i] = NULL;
+	}
 	free(arr);
+	arr = NULL;
 }

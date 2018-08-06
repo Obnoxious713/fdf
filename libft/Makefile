@@ -10,13 +10,18 @@
 #                                                                              #
 # **************************************************************************** #
 
-HEADER = libft.h
+HEADER = -I./libft.h
 
-FLAGS = -Wall -Werror -Wextra -c
+FLAGS = -Wall -Werror -Wextra -g
 
 NORM = norminette -R CheckForbiddenSourceHeader
 
+CC = gcc
+
 NAME = libft.a
+NAME2 = libft
+
+RM = rm -rf
 
 SRC = ft_atoi.c \
 				ft_bzero.c \
@@ -90,10 +95,12 @@ SRC = ft_atoi.c \
 				ft_exit.c \
 				ft_countword.c \
 				ft_lstapp.c \
-				ft_error_unknown.c
-				# ft_matcpy.c \
-				# ft_matmult.c \
-				# ft_vec_by_mat.c
+				ft_error_unknown.c \
+				get_next_line.c \
+				ft_gnl.c \
+				ft_strjoinfree.c \
+				ft_strndup.c
+
 OBJ = $(patsubst %.c, %.o, $(SRC))
 # ar == archiver; #
 # c flag == creates lib if it doesn't already exist; #
@@ -102,20 +109,23 @@ OBJ = $(patsubst %.c, %.o, $(SRC))
 all: $(NAME)
 
 $(NAME):
-	@gcc $(FLAGS) $(SRC) -I $(HEADER)
+	@echo "-> Creating archive $(NAME)...\n "
+	@$(CC) -c $(FLAGS) $(SRC)
 	@ar rc $(NAME) $(OBJ)
 	@ranlib $(NAME)
 
 clean:
-	@/bin/rm -f $(OBJ)
+	@echo "-> Cleaning $(NAME2) object files..."
+	@$(RM) $(OBJ)
 
 fclean: clean
-	@/bin/rm -f $(NAME)
+	@echo "-> Cleaning $(NAME)..."
+	@$(RM) $(NAME)
 
 re: fclean all
-	@gcc $(FLAGS) $(SRC) -I $(HEADER)
-	@ar rc $(NAME) $(OBJ)
-	@ranlib $(NAME)
+#	@$(CC) $(FLAGS) $(SRC) -I $(HEADER)
+#	@ar rc $(NAME) $(OBJ)
+#	@ranlib $(NAME)
 
 .PHONY: all clean fclean re
 
