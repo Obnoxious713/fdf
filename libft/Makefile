@@ -89,7 +89,7 @@ SRC = ft_atoi.c \
 				ft_lstprint.c \
 				ft_putstrarr.c \
 				ft_strrep.c \
-				ft_free_arr.c \
+				ft_freestrarr.c \
 				ft_atoi_base.c \
 				ft_error.c \
 				ft_exit.c \

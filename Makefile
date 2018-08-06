@@ -12,7 +12,7 @@
 
 NAME = fdf
 
-FLAGS = -Wall -Werror -Wextra -g#-fsanitize=address
+FLAGS = -Wall -Werror -Wextra -g
 
 CC = gcc
 

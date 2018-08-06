@@ -104,7 +104,7 @@ t_list				*ft_lstmap(t_list *lst, t_list *(*f)(t_list *elem));
 void				ft_lstprint(t_list *list);
 void				ft_putstrarr(char **strarr);
 void				ft_strrep(char *str, char ch1, char ch2);
-void				ft_free_arr(char **arr);
+void				ft_freestrarr(char **arr);
 void				ft_exit(void);
 int					ft_countword(const char *s, char c);
 void				ft_lstapp(t_list **alst, t_list *new);

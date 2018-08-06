@@ -20,7 +20,7 @@ static void			clean(t_list **rows, char ***buf)
 	tmp = *rows;
 	*rows = (*rows)->next;
 	free(tmp);
-	ft_free_arr(*buf);
+	ft_freestrarr(*buf);
 }
 
 static t_plot		*list_to_arr(t_plot *plot, t_list *rows)
@@ -30,12 +30,13 @@ static t_plot		*list_to_arr(t_plot *plot, t_list *rows)
 	int				z;
 	char			**buf;
 
-	plot->points = (t_vertex***)ft_memalloc(sizeof(t_vertex**) * plot->height);
+	plot->points = (t_vertex***)ft_memalloc(sizeof(t_vertex**)
+					* plot->height);
 	y = -1;
 	while (++y < plot->height)
 	{
 		plot->points[y] = (t_vertex**)ft_memalloc(sizeof(t_vertex*)
-													* plot->width);
+							* plot->width);
 		buf = ft_strsplit(rows->content, ' ');
 		x = -1;
 		while (++x < plot->width)

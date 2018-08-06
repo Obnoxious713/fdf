@@ -99,7 +99,7 @@ void			draw(t_data *data)
 	data->x_trans = 0;
 	data->y_trans = 0;
 	data->mlx = mlx_init();
-	data->win = mlx_new_window(data->mlx, WINDOW_SIZE_X, WINDOW_SIZE_Y, "FDF");
+	data->win = mlx_new_window(data->mlx, WINDOW_SIZE_X, WINDOW_SIZE_Y, "fdf");
 	init_color_tab(data);
 	setup_world(data);
 	mlx_expose_hook(data->win, expose_hook, data);
