@@ -1,23 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strnew.c                                        :+:      :+:    :+:   */
+/*   ft_strndup.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jfleisch <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/02/21 15:05:50 by jfleisch          #+#    #+#             */
-/*   Updated: 2018/02/21 15:06:17 by jfleisch         ###   ########.fr       */
+/*   Created: 2018/08/01 16:26:39 by jfleisch          #+#    #+#             */
+/*   Updated: 2018/08/01 16:26:39 by jfleisch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char				*ft_strnew(size_t size)
+char		*ft_strndup(const char *s, size_t n)
 {
-	char			*str;
+	char	*str;
 
-	str = ft_memalloc(size + 1);
-	if (str)
-		ft_bzero(str, size + 1);
+	if (!(str = (char *)ft_memalloc(sizeof(char) * n + 1)))
+		return (NULL);
+	str = ft_strncpy(str, s, n);
+	str[n] = 0;
 	return (str);
 }

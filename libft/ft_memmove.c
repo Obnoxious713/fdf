@@ -21,7 +21,7 @@ void	*ft_memmove(void *dst, const void *src, size_t len)
 
 	d = (unsigned char *)dst;
 	s = (const unsigned char *)src;
-	if ((tmp = (unsigned char *)malloc(sizeof(unsigned char) * len)))
+	if ((tmp = (unsigned char *)ft_memalloc(sizeof(unsigned char) * len)))
 	{
 		i = -1;
 		while (++i < len)
